@@ -15,11 +15,12 @@
     "underscore": "^1.9.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start":"node ./server-js/server.js",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "nodemon ./server-js/server.js",
+    "devserver": "nodemon ./server-js/server.js",
     "tswatch": "tsc -w"
   },
   "eslintConfig": {
