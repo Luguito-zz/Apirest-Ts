@@ -36,6 +36,18 @@ class ApiUser {
             }
         });
     }
+    getUserById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let name = req.params.name;
+            try {
+                const user = yield User_1.default.findOne({ name: name });
+                res.json(user);
+            }
+            catch (err) {
+                res.json(err);
+            }
+        });
+    }
     createUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             let body = req.body;
@@ -64,6 +76,7 @@ class ApiUser {
     }
     routes() {
         this.router.get('/api/user', Authentication_1.default, this.getUser);
+        this.router.get('/api/user/:name', Authentication_1.default, this.getUserById);
         this.router.post('/api/user', this.createUser);
         this.router.put('/api/user/:email', this.deleteUser);
     }

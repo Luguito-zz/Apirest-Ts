@@ -28,6 +28,16 @@ class ApiUser{
              
     }
 
+    private async getUserById(req:Request,res:Response){
+        let name = req.params.name
+        try{
+            const user = await User.findOne({name:name});
+            res.json(user)
+        }catch(err){
+            res.json(err);
+        }
+    }
+
     private async createUser(req:Request,res:Response):Promise<void>{
         let body = req.body;
 
@@ -56,6 +66,7 @@ class ApiUser{
 
     routes(){
         this.router.get('/api/user', verifyToken ,this.getUser);
+        this.router.get('/api/user/:name', verifyToken ,this.getUserById);
         this.router.post('/api/user', this.createUser);
         this.router.put('/api/user/:email', this.deleteUser);
     }
