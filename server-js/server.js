@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const apiUser_1 = __importDefault(require("./routes/apiUser"));
+const apiLogin_1 = __importDefault(require("./routes/apiLogin"));
 class Server {
     constructor() {
         this.app = express_1.default();
@@ -22,12 +23,6 @@ class Server {
             console.log('Servidor Mongo online');
         });
         //Cors Config
-        this.app.use((req, res, next) => {
-            res.header('Access-Control-Allow-Origin', '*');
-            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-            res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-            next();
-        });
         //Middlewares
         this.app.use(morgan_1.default('dev'));
         this.app.use(express_1.default.urlencoded({ extended: false }));
@@ -37,6 +32,7 @@ class Server {
     }
     routes() {
         this.app.use(apiUser_1.default);
+        this.app.use(apiLogin_1.default);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {

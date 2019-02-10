@@ -12,7 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const User_1 = __importDefault(require("../models/User"));
+const Authentication_1 = __importDefault(require("../middlewares/Authentication"));
+/*
+    I use Bcrypt to encrypt the password
+    and underscore i will use to ban some fields
+
+*/
 class ApiUser {
     constructor() {
         this.router = express_1.Router();
@@ -36,7 +43,7 @@ class ApiUser {
                 name: body.name,
                 lastname: body.lastname,
                 email: body.email,
-                password: body.password,
+                password: bcrypt_1.default.hashSync(body.password, 10),
             });
             yield newUser.save();
             res.status(200).json(newUser);
@@ -56,7 +63,7 @@ class ApiUser {
         });
     }
     routes() {
-        this.router.get('/api/user', this.getUser);
+        this.router.get('/api/user', Authentication_1.default, this.getUser);
         this.router.post('/api/user', this.createUser);
         this.router.put('/api/user/:email', this.deleteUser);
     }

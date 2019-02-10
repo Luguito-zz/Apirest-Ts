@@ -1,5 +1,14 @@
 import {Request,Response,Router} from 'express';
+import bcrypt from 'bcrypt';
+import _ from 'underscore';
 import User from '../models/User';
+import verifyToken from '../middlewares/Authentication';
+
+/*
+    I use Bcrypt to encrypt the password
+    and underscore i will use to ban some fields 
+
+*/
 
 class ApiUser{
     public router:Router;
@@ -26,7 +35,7 @@ class ApiUser{
             name: body.name,
             lastname: body.lastname,
             email: body.email,
-            password: body.password,
+            password: bcrypt.hashSync(body.password, 10), 
         });
         await newUser.save();
         res.status(200).json(newUser);
@@ -46,7 +55,7 @@ class ApiUser{
     }
 
     routes(){
-        this.router.get('/api/user', this.getUser);
+        this.router.get('/api/user', verifyToken ,this.getUser);
         this.router.post('/api/user', this.createUser);
         this.router.put('/api/user/:email', this.deleteUser);
     }

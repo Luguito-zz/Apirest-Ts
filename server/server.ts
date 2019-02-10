@@ -2,6 +2,7 @@ import express, {Response,Request,NextFunction} from 'express';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import apiUser from './routes/apiUser';
+import apiLogin from './routes/apiLogin';
 
 class Server{
     public app:express.Application;
@@ -22,13 +23,6 @@ class Server{
         })
 
         //Cors Config
-        this.app.use((req:Request, res:Response, next:NextFunction) => {
-            res.header('Access-Control-Allow-Origin', '*');
-            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-            res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-        
-            next();
-        });
         
         //Middlewares
         this.app.use(morgan('dev'));
@@ -40,7 +34,8 @@ class Server{
     }
 
     routes(){
-        this.app.use(apiUser)
+        this.app.use(apiUser);
+        this.app.use(apiLogin);
     }
 
     start(){   
